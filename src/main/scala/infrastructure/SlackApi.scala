@@ -9,6 +9,10 @@ trait SlackApi {
   val token: String = "generated-token" // replace your Slack API token here
   val apiClient: SlackApiClient
 
+  /**
+    *
+    * this method sends a msgBody on the channel named channelName as user
+    */
   def send(channelName: String, msgBody: String, user: Option[String]): Future[Boolean] = {
     val channelId: Future[Option[String]] = getChannelId(channelName)
     channelId.map {
@@ -23,6 +27,10 @@ trait SlackApi {
     }
   }
 
+  /**
+    *
+    * this method returns the channel id of the channel named channelName
+    */
   def getChannelId(channelName: String): Future[Option[String]] = {
     val channelsFuture: Future[Seq[Option[String]]] = apiClient.listChannels().map(channels =>
       channels.map(channel =>
